@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning IUE</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#E8521A;--orange-dark:#B83D0F;--orange-deeper:#8C2D08;
+  --orange-light:#FBE9E2;--amber:#F7C35F;--cream:#FDF6F2;
+  --border:#F2D5C8;--text:#3D1A0A;--sub:#9A5A42;
+}
+body{font-family:'Segoe UI',sans-serif;background:var(--cream)}
+.nav{background:#fff;border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:10}
+.logo{font-size:19px;font-weight:600;color:var(--orange-dark);display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
+.nav-links{display:flex;gap:8px}
+.nav-btn{padding:7px 18px;border-radius:30px;border:1.5px solid var(--border);background:transparent;color:var(--orange-deeper);cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
+.nav-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.hero{background:var(--orange-dark);padding:4rem 2.5rem 5rem;text-align:center;color:#fff;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(232,82,26,.5),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(247,195,95,.2),transparent 50%)}
+.hero-content{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 14px;font-size:12px;margin-bottom:1.25rem}
+.hero h1{font-size:32px;font-weight:600;line-height:1.3;margin-bottom:10px}
+.hero h1 span{color:var(--amber)}
+.hero p{font-size:15px;opacity:.8;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-hp{padding:12px 28px;border-radius:30px;border:none;cursor:pointer;font-size:14px;font-weight:500;background:#fff;color:var(--orange-dark);display:flex;align-items:center;gap:8px}
+.btn-hs{padding:12px 28px;border-radius:30px;border:1.5px solid rgba(255,255,255,.5);cursor:pointer;font-size:14px;background:transparent;color:#fff;display:flex;align-items:center;gap:8px}
+.stats-band{background:#fff;border-bottom:1px solid var(--border);padding:1.25rem 2.5rem;display:grid;grid-template-columns:repeat(3,1fr);max-width:700px;margin:0 auto}
+.stat-item{text-align:center;padding:.5rem}
+.stat-num{font-size:24px;font-weight:600;color:var(--orange)}
+.stat-label{font-size:12px;color:var(--sub);margin-top:2px}
+.main{padding:2rem 2.5rem;max-width:1000px;margin:0 auto}
+.page{display:none}.page.active{display:block}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.sec-title{font-size:15px;font-weight:600;color:#5A2810;display:flex;align-items:center;gap:8px}
+.sec-title i{color:var(--orange)}
+.badge-count{font-size:12px;color:var(--sub);background:var(--orange-light);padding:4px 12px;border-radius:20px}
+.filters-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.75rem}
+.filters-title{font-size:12px;font-weight:600;color:var(--sub);margin-bottom:1rem;letter-spacing:.05em;text-transform:uppercase}
+.filters-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;align-items:end}
+.fg label{font-size:12px;color:#7A4530;display:block;margin-bottom:5px;font-weight:500}
+.fg select,.fg input{width:100%;padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:#FFFAF8;color:var(--text);font-size:13px}
+.fg select:focus{outline:none;border-color:var(--orange)}
+.btn-buscar{padding:9px 22px;background:var(--orange);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tutors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.tutor-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .15s;position:relative}
+.tutor-card:hover{transform:translateY(-2px)}
+.card-top{background:var(--orange-light);padding:1.25rem 1.25rem .75rem;display:flex;align-items:center;gap:12px}
+.avatar{width:50px;height:50px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;color:#fff;flex-shrink:0}
+.av0{background:var(--orange)}.av1{background:#B83D0F}.av2{background:#D4600E}
+.av3{background:#8C2D08}.av4{background:#C45010}.av5{background:#E8521A}
+.tutor-name{font-size:14px;font-weight:600;color:var(--text)}
+.tutor-sub{font-size:12px;color:var(--sub);margin-top:2px}
+.badge-mod{position:absolute;top:12px;right:12px;background:var(--orange);color:#fff;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600}
+.card-body{padding:1rem 1.25rem}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tag{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:500}
+.tag-mat{background:#FBE9E2;color:#8C2D08}.tag-sem{background:#FEF3E2;color:#7A4A00}
+.rating-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.stars{color:var(--amber);font-size:13px}
+.rnum{font-size:13px;font-weight:600;color:var(--text)}
+.rsub{font-size:11px;color:var(--sub)}
+.card-footer{border-top:1px solid #FAE8DF;padding:.875rem 1.25rem;display:flex;gap:8px}
+.btn-ver{flex:1;padding:8px;border:1.5px solid var(--orange);color:var(--orange);background:transparent;border-radius:10px;cursor:pointer;font-size:12px;font-weight:500}
+.btn-ag{flex:2;padding:8px;background:var(--orange);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px}
+.reg-wrap{max-width:580px;margin:0 auto}
+.reg-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:2rem}
+.reg-hdr{text-align:center;margin-bottom:1.75rem}
+.reg-hdr h2{font-size:20px;font-weight:600;color:var(--text);margin-bottom:6px}
+.reg-hdr p{font-size:13px;color:var(--sub)}
+.role-sel{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.75rem}
+.role-opt{border:2px solid var(--border);border-radius:14px;padding:1.25rem;text-align:center;cursor:pointer;transition:all .15s;background:#FFFAF8}
+.role-opt.sel{border-color:var(--orange);background:var(--orange-light)}
+.role-opt i{font-size:30px;color:var(--orange);display:block;margin-bottom:8px}
+.role-opt strong{font-size:13px;font-weight:600;color:var(--text);display:block}
+.role-opt small{font-size:11px;color:var(--sub)}
+.fg2{margin-bottom:14px}
+.fg2 label{font-size:12px;color:#7A4530;display:block;margin-bottom:5px;font-weight:500}
+.fg2 input,.fg2 select,.fg2 textarea{width:100%;padding:9px 13px;border-radius:10px;border:1px solid var(--border);background:#FFFAF8;color:var(--text);font-size:13px}
+.fg2 textarea{height:80px;resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-submit{width:100%;padding:12px;background:var(--orange);color:#fff;border:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+.tutor-extra{background:var(--orange-light);border-radius:12px;padding:1.25rem;margin-top:4px}
+.tutor-extra-title{font-size:12px;font-weight:600;color:#8C2D08;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(90,28,10,.45);z-index:30;align-items:flex-start;justify-content:center;padding-top:60px;overflow-y:auto}
+.modal-bg.open{display:flex}
+.modal-box{background:#fff;border-radius:20px;width:92%;max-width:450px;overflow:hidden;margin-bottom:40px}
+.modal-head{background:var(--orange);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{color:#fff;font-size:15px;font-weight:600}
+.modal-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:1.5rem}
+.tutor-mini{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+.tutor-mini .avatar{width:42px;height:42px;font-size:13px}
+.tutor-mini-name{font-size:14px;font-weight:600;color:var(--text)}
+.tutor-mini-bio{font-size:12px;color:var(--sub);line-height:1.5}
+.mfg{margin-bottom:13px}
+.mfg label{font-size:12px;color:#7A4530;font-weight:500;display:block;margin-bottom:4px}
+.mfg input,.mfg select,.mfg textarea{width:100%;padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:#FFFAF8;color:var(--text);font-size:13px}
+.mfg textarea{height:60px;resize:vertical}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sitio-box{background:var(--orange-light);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:13px}
+.sitio-box-title{font-size:11px;font-weight:600;color:#8C2D08;margin-bottom:8px;display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:.04em}
+.btn-confirm{width:100%;padding:11px;background:var(--orange);color:#fff;border:none;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.btn-confirm:disabled{opacity:.6;cursor:not-allowed}
+.toast{position:fixed;bottom:28px;right:28px;background:#5A2810;color:#fff;padding:13px 20px;border-radius:12px;font-size:13px;z-index:100;display:none;align-items:center;gap:8px;max-width:340px;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.toast.show{display:flex}
+.error-box{background:#FFF0ED;border:1px solid #F2D5C8;border-radius:10px;padding:10px 14px;font-size:12px;color:#8C2D08;margin-bottom:12px;display:none;align-items:center;gap:8px}
+.loading{text-align:center;padding:3rem;color:var(--sub);font-size:14px;grid-column:1/-1}
+.spin{display:inline-block;animation:spin 1s linear infinite;font-size:32px;color:var(--orange-light)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.no-results{text-align:center;padding:3rem 1rem;color:var(--sub);font-size:14px;grid-column:1/-1}
+.cita-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin-bottom:12px}
+.cita-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.cita-badge{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.cita-badge.pendiente{background:#FEF3E2;color:#7A4A00}
+.cita-badge.confirmada{background:#E6F7EE;color:#1A7A40}
+.cita-badge.cancelada{background:#FFF0ED;color:#8C2D08}
+.cita-info{font-size:13px;color:var(--text);line-height:1.8}
+.cita-info span{color:var(--sub);font-size:12px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-icon"><i class="ti ti-book-2"></i></div>
+    Learning IUE
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="goPage('buscar',this)"><i class="ti ti-search"></i> Buscar tutor</button>
+    <button class="nav-btn" onclick="goPage('miscitas',this)"><i class="ti ti-calendar-event"></i> Mis citas</button>
+    <button class="nav-btn" onclick="goPage('registro',this)"><i class="ti ti-user-plus"></i> Registrarse</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="ti ti-award"></i> Plataforma oficial IUE</div>
+    <h1>Aprende más con los mejores<br><span>tutores de tu carrera</span></h1>
+    <p>Conectamos estudiantes con tutores de confianza. Agenda sesiones presenciales o virtuales en minutos.</p>
+    <div class="hero-btns">
+      <button class="btn-hp" onclick="goPage('buscar',null)"><i class="ti ti-search"></i> Buscar tutor ahora</button>
+      <button class="btn-hs" onclick="goPage('registro',null)"><i class="ti ti-chalkboard"></i> Quiero ser tutor</button>
+    </div>
+  </div>
+</div>
+
+<div class="stats-band">
+  <div class="stat-item"><div class="stat-num" id="stat-tutores">—</div><div class="stat-label">Tutores activos</div></div>
+  <div class="stat-item" style="border-left:1px solid var(--border);border-right:1px solid var(--border)">
+    <div class="stat-num" id="stat-materias">—</div><div class="stat-label">Materias</div>
+  </div>
+  <div class="stat-item"><div class="stat-num" id="stat-sesiones">—</div><div class="stat-label">Sesiones completadas</div></div>
+</div>
+
+<div class="main">
+  <div class="page active" id="page-buscar">
+    <div class="filters-card">
+      <div class="filters-title"><i class="ti ti-adjustments-horizontal"></i> Filtrar tutores</div>
+      <div class="filters-row">
+        <div class="fg"><label>Materia</label>
+          <select id="f-mat"><option value="">Todas las materias</option></select>
+        </div>
+        <div class="fg"><label>Semestre del tutor</label>
+          <select id="f-sem"><option value="">Cualquier semestre</option>
+            <option>1°</option><option>2°</option><option>3°</option><option>4°</option>
+            <option>5°</option><option>6°</option><option>7°</option><option>8°</option>
+          </select>
+        </div>
+        <div class="fg"><label>Calificación mínima</label>
+          <select id="f-rat">
+            <option value="0">Cualquier calificación</option>
+            <option value="5">★★★★★ 5.0</option>
+            <option value="4.5">★★★★½ 4.5+</option>
+            <option value="4">★★★★ 4.0+</option>
+          </select>
+        </div>
+        <div class="fg"><label>Modalidad</label>
+          <select id="f-mod"><option value="">Cualquiera</option><option>Presencial</option><option>Virtual</option></select>
+        </div>
+        <div class="fg"><button class="btn-buscar" onclick="filtrar()"><i class="ti ti-search"></i> Buscar</button></div>
+      </div>
+    </div>
+    <div class="error-box" id="error-carga"><i class="ti ti-wifi-off"></i><span id="error-carga-msg"></span></div>
+    <div class="sec-hdr">
+      <div class="sec-title"><i class="ti ti-users"></i> Tutores disponibles</div>
+      <span class="badge-count" id="count-label">Cargando...</span>
+    </div>
+    <div class="tutors-grid" id="grid">
+      <div class="loading"><i class="ti ti-loader-2 spin"></i><br><br>Conectando con Google Sheets...</div>
+    </div>
+  </div>
+
+  <div class="page" id="page-registro">
+    <div class="reg-wrap">
+      <div class="reg-card">
+        <div class="reg-hdr"><h2>Crea tu cuenta en Learning IUE</h2><p>Únete como tutor o como estudiante que busca apoyo académico</p></div>
+        <div class="role-sel">
+          <div class="role-opt sel" id="ro-tutor" onclick="setRol('tutor')">
+            <i class="ti ti-chalkboard"></i><strong>Soy tutor</strong><small>Ofrezco mis conocimientos</small>
+          </div>
+          <div class="role-opt" id="ro-est" onclick="setRol('est')">
+            <i class="ti ti-school"></i><strong>Soy estudiante</strong><small>Busco ayuda académica</small>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg2"><label>Nombre</label><input id="r-nombre" type="text" placeholder="Tu nombre"></div>
+          <div class="fg2"><label>Apellido</label><input id="r-apellido" type="text" placeholder="Tu apellido"></div>
+        </div>
+        <div class="fg2"><label>Correo institucional</label><input id="r-correo" type="email" placeholder="usuario@correo.iue.edu.co"></div>
+        <div class="frow">
+          <div class="fg2"><label>Semestre actual</label>
+            <select id="r-semestre"><option value="">Seleccionar</option>
+              <option>1°</option><option>2°</option><option>3°</option><option>4°</option>
+              <option>5°</option><option>6°</option><option>7°</option><option>8°</option>
+              <option>9°</option><option>10°</option>
+            </select>
+          </div>
+        </div>
+        <div id="tutor-extra" class="tutor-extra">
+          <div class="tutor-extra-title"><i class="ti ti-star"></i> Información como tutor</div>
+          <div class="frow">
+            <div class="fg2"><label>Materia principal</label>
+              <select id="r-materia"><option value="">Seleccionar</option>
+                <option>Cálculo</option><option>Programación</option><option>Física</option>
+                <option>Álgebra</option><option>Bases de datos</option><option>Inglés</option><option>Estadística</option>
+              </select>
+            </div>
+            <div class="fg2"><label>Modalidad disponible</label>
+              <select id="r-modalidad"><option>Presencial y virtual</option><option>Solo presencial</option><option>Solo virtual</option></select>
+            </div>
+          </div>
+          <div class="fg2"><label>Sitio preferido (presencial)</label>
+            <input id="r-sitio" type="text" placeholder="Ej: Bloque C, Biblioteca...">
+          </div>
+          <div class="fg2"><label>Presentación breve</label>
+            <textarea id="r-bio" placeholder="Cuéntale a los estudiantes sobre ti..."></textarea>
+          </div>
+        </div>
+        <div class="error-box" id="error-reg"><i class="ti ti-alert-circle"></i><span id="error-reg-msg"></span></div>
+        <button class="btn-submit" id="btn-registrar" onclick="registrar()">
+          Crear cuenta <i class="ti ti-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PÁGINA MIS CITAS -->
+  <div class="page" id="page-miscitas">
+    <div class="reg-wrap" style="max-width:700px">
+      <div class="reg-card" id="miscitas-login-box">
+        <div class="reg-hdr">
+          <h2><i class="ti ti-calendar-event" style="color:var(--orange)"></i> Mis citas</h2>
+          <p>Ingresa tus datos para consultar tus sesiones agendadas</p>
+        </div>
+        <div class="role-sel" style="margin-bottom:1.25rem">
+          <div class="role-opt sel" id="mc-ro-est" onclick="setMcRol('est')">
+            <i class="ti ti-school"></i><strong>Soy estudiante</strong><small>Ver mis sesiones</small>
+          </div>
+          <div class="role-opt" id="mc-ro-tutor" onclick="setMcRol('tutor')">
+            <i class="ti ti-chalkboard"></i><strong>Soy tutor</strong><small>Ver mis sesiones</small>
+          </div>
+        </div>
+        <div class="fg2"><label>Correo institucional</label>
+          <input id="mc-correo" type="email" placeholder="usuario@correo.iue.edu.co">
+        </div>
+        <div class="error-box" id="error-mc"><i class="ti ti-alert-circle"></i><span id="error-mc-msg"></span></div>
+        <button class="btn-submit" id="btn-mc-buscar" onclick="buscarMisCitas()">
+          <i class="ti ti-search"></i> Buscar mis citas
+        </button>
+      </div>
+      <div id="miscitas-resultados" style="display:none">
+        <div class="sec-hdr" style="margin-bottom:1rem">
+          <div class="sec-title"><i class="ti ti-calendar-event"></i> <span id="mc-nombre-label">Mis citas</span></div>
+          <button style="font-size:12px;padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;background:transparent;color:var(--sub);cursor:pointer" onclick="cerrarMisCitas()"><i class="ti ti-logout"></i> Salir</button>
+        </div>
+        <div id="mc-lista"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VERIFICACIÓN IDENTIDAD -->
+<div class="modal-bg" id="modal-verificar">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3><i class="ti ti-shield-check"></i> Verificar identidad</h3>
+      <button class="modal-close" onclick="cerrarVerificar()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--sub);margin-bottom:1.25rem;line-height:1.6">Para agendar una sesión necesitamos verificar tu identidad como estudiante registrado.</p>
+      <div class="mfg"><label>Correo institucional</label>
+        <input id="v-correo" type="email" placeholder="usuario@correo.iue.edu.co">
+      </div>
+      <div class="error-box" id="error-verificar"><i class="ti ti-alert-circle"></i><span id="error-verificar-msg"></span></div>
+      <button class="btn-confirm" id="btn-verificar" onclick="verificarEstudiante()">
+        <i class="ti ti-shield-check"></i> Verificar y continuar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AGENDAR -->
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="m-title">Agendar sesión</h3>
+      <button class="modal-close" onclick="cerrarModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="tutor-mini">
+        <div class="avatar av0" id="m-av"></div>
+        <div><div class="tutor-mini-name" id="m-name"></div><div class="tutor-mini-bio" id="m-bio"></div></div>
+      </div>
+      <div class="mrow">
+        <div class="mfg"><label>Fecha</label><input type="date" id="m-fecha"></div>
+        <div class="mfg"><label>Hora</label>
+          <select id="m-hora">
+            <option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option>
+            <option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option>
+            <option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
+          </select>
+        </div>
+      </div>
+      <div class="mfg"><label>Modalidad</label>
+        <select id="m-modalidad" onchange="toggleSitio()">
+          <option value="Virtual">Virtual</option>
+          <option value="Presencial">Presencial</option>
+        </select>
+      </div>
+      <div class="sitio-box" id="sitio-box" style="display:none">
+        <div class="sitio-box-title"><i class="ti ti-map-pin"></i> Lugar de encuentro</div>
+        <div class="mfg" style="margin-bottom:0"><label>Escribe el lugar</label>
+          <input type="text" id="m-lugar" placeholder="Ej: Bloque C biblioteca, sala 204, cafetería...">
+        </div>
+      </div>
+      <div class="mfg"><label>Materia / Tema a tratar</label>
+        <input type="text" id="m-tema" placeholder="Ej: Derivadas parciales, punteros en C...">
+      </div>
+      <div class="mfg"><label>Mensaje para el tutor (opcional)</label>
+        <textarea id="m-msg" placeholder="¿Algo que quieras aclarar antes de la sesión?"></textarea>
+      </div>
+      <div class="error-box" id="error-agenda"><i class="ti ti-alert-circle"></i><span id="error-agenda-msg"></span></div>
+      <button class="btn-confirm" id="btn-confirmar" onclick="confirmar()">
+        <i class="ti ti-calendar-check"></i> Confirmar sesión
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
+
+<script>
+const SHEET_ID        = "1ZAJ4dETY9KZ-2New_3lDLmjgzgP6OujGOEBxF-T5Azc";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIJ5uTB0nOCmtlah3cAvQ_BzuYwA8r-wAv1pKC9EBEa9iA1kz62qAdpb4N-UkzJPu4/exec";
+
+// ── LEER ──────────────────────────────────────────────────
+async function leerHoja(sheetName) {
+  const url  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+  const res  = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.substring(47, text.length - 2));
+  const cols = json.table.cols.map(c => c.label);
+  return json.table.rows
+    .filter(row => row.c && row.c.some(c => c && c.v !== null))
+    .map(row => {
+      const obj = {};
+      cols.forEach((col, i) => { obj[col] = row.c[i] ? row.c[i].v : ""; });
+      return obj;
+    });
+}
+
+// ── ESCRIBIR via GET (evita CORS) ─────────────────────────
+async function escribirFila(hoja, datos) {
+  const url = APPS_SCRIPT_URL
+    + "?accion=escribir"
+    + "&hoja=" + encodeURIComponent(hoja)
+    + "&datos=" + encodeURIComponent(JSON.stringify(datos));
+  const res  = await fetch(url);
+  const json = await res.json();
+  if (!json.ok) throw new Error(json.error || "Error desconocido");
+  return json;
+}
+
+// ── ESTADO ────────────────────────────────────────────────
+let todosTutores = [], visTutores = [], activeTutor = null, rolActual = "tutor";
+let estudianteActivo = null, pendingTutorIdx = null, mcRolActual = "est";
+const avC = ["av0","av1","av2","av3","av4","av5"];
+
+// ── CARGAR TUTORES ────────────────────────────────────────
+async function cargarTutores() {
+  const filas = await leerHoja("Tutores");
+  return filas
+    .filter(f => String(f["Activo"]).toUpperCase() === "TRUE")
+    .map(f => ({
+      id:       f["ID_Tutor"],
+      nombre:   (f["Nombre"] + " " + f["Apellido"]).trim(),
+      semestre: f["Semestre"] ? f["Semestre"] + "°" : "—",
+      materias: f["Materias"] ? f["Materias"].split(",").map(m => m.trim()) : [],
+      modalidad:f["Modalidad"] || "Virtual",
+      sitio:    f["Sitio_Preferido"] || "",
+      bio:      f["Presentacion"] || "",
+      rating:   parseFloat(f["Calificacion"]) || 0,
+      sesiones: parseInt(f["Sesiones_Completadas"]) || 0,
+      correo:   f["Correo"] || "",
+      initials: ((f["Nombre"]||"?")[0]+(f["Apellido"]||"?")[0]).toUpperCase()
+    }));
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function starsHTML(r) {
+  const f=Math.floor(r),h=(r-f)>=0.5?1:0,e=5-f-h;
+  return "★".repeat(f)+(h?"½":"")+"☆".repeat(e);
+}
+
+function renderGrid(list) {
+  const g = document.getElementById("grid");
+  document.getElementById("count-label").textContent = list.length + " tutor" + (list.length!==1?"es":"");
+  if (!list.length) {
+    g.innerHTML = `<div class="no-results"><i class="ti ti-mood-empty" style="font-size:36px;color:var(--orange-light);display:block;margin-bottom:12px"></i>No encontramos tutores con esos filtros.</div>`;
+    return;
+  }
+  g.innerHTML = list.map((t,i) => `
+    <div class="tutor-card" onclick="abrirModal(${i})">
+      <span class="badge-mod">${t.modalidad}</span>
+      <div class="card-top">
+        <div class="avatar ${avC[i%6]}">${t.initials}</div>
+        <div><div class="tutor-name">${t.nombre}</div><div class="tutor-sub">Semestre ${t.semestre} · IUE</div></div>
+      </div>
+      <div class="card-body">
+        <div class="tags">
+          ${t.materias.map(m=>`<span class="tag tag-mat">${m}</span>`).join("")}
+          <span class="tag tag-sem">Sem. ${t.semestre}</span>
+        </div>
+        <div class="rating-row">
+          <span class="stars">${starsHTML(t.rating)}</span>
+          <span class="rnum">${t.rating.toFixed(1)}</span>
+          <span class="rsub">· ${t.sesiones} sesiones</span>
+        </div>
+        <div style="font-size:12px;color:#9A5A42;line-height:1.5">${t.bio}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-ver" onclick="event.stopPropagation()">Ver perfil</button>
+        <button class="btn-ag" onclick="event.stopPropagation();abrirModal(${i})">
+          <i class="ti ti-calendar"></i> Agendar
+        </button>
+      </div>
+    </div>`).join("");
+}
+
+function poblarMaterias(tutores) {
+  const todas = new Set(tutores.flatMap(t => t.materias));
+  const sel = document.getElementById("f-mat");
+  sel.innerHTML = '<option value="">Todas las materias</option>';
+  todas.forEach(m => { const o=document.createElement("option"); o.value=m; o.textContent=m; sel.appendChild(o); });
+}
+
+function actualizarStats() {
+  document.getElementById("stat-tutores").textContent  = todosTutores.length;
+  document.getElementById("stat-materias").textContent = new Set(todosTutores.flatMap(t=>t.materias)).size;
+  const ses = todosTutores.reduce((a,t)=>a+t.sesiones,0);
+  document.getElementById("stat-sesiones").textContent = ses>0 ? ses+"+" : "0";
+}
+
+// ── FILTROS ───────────────────────────────────────────────
+function filtrar() {
+  const mat=document.getElementById("f-mat").value;
+  const sem=document.getElementById("f-sem").value;
+  const rat=parseFloat(document.getElementById("f-rat").value)||0;
+  const mod=document.getElementById("f-mod").value;
+  visTutores = todosTutores.filter(t =>
+    (!mat || t.materias.includes(mat)) &&
+    (!sem || t.semestre === sem) &&
+    (t.rating >= rat) &&
+    (!mod || t.modalidad === mod || t.modalidad === "Presencial y virtual")
+  );
+  renderGrid(visTutores);
+}
+
+// ── MODAL ─────────────────────────────────────────────────
+function abrirModal(i) {
+  pendingTutorIdx = i;
+  document.getElementById("v-correo").value = "";
+  document.getElementById("error-verificar").style.display = "none";
+  document.getElementById("modal-verificar").classList.add("open");
+}
+function cerrarVerificar() { document.getElementById("modal-verificar").classList.remove("open"); }
+
+async function verificarEstudiante() {
+  const correo = document.getElementById("v-correo").value.trim().toLowerCase();
+  if (!correo) { showError("error-verificar","error-verificar-msg","Ingresa tu correo institucional."); return; }
+  if (!correo.endsWith("@correo.iue.edu.co")) { showError("error-verificar","error-verificar-msg","Usa tu correo @correo.iue.edu.co."); return; }
+
+  const btn = document.getElementById("btn-verificar");
+  btn.innerHTML = '<i class="ti ti-loader-2 spin"></i> Verificando...';
+  btn.disabled = true;
+  document.getElementById("error-verificar").style.display = "none";
+
+  try {
+    const estudiantes = await leerHoja("Estudiantes");
+    const encontrado = estudiantes.find(e => (e["Correo"]||"").toLowerCase() === correo);
+    if (!encontrado) {
+      showError("error-verificar","error-verificar-msg","No encontramos ese correo. ¿Ya te registraste como estudiante?");
+      return;
+    }
+    estudianteActivo = { id: encontrado["ID_Estudiante"], nombre: encontrado["Nombre"]+" "+encontrado["Apellido"], correo };
+    cerrarVerificar();
+    abrirModalAgenda(pendingTutorIdx);
+  } catch(e) {
+    showError("error-verificar","error-verificar-msg","Error al verificar. Intenta de nuevo.");
+  } finally {
+    btn.innerHTML = '<i class="ti ti-shield-check"></i> Verificar y continuar';
+    btn.disabled = false;
+  }
+}
+
+function abrirModalAgenda(i) {
+  activeTutor = visTutores[i];
+  document.getElementById("m-title").textContent = "Agendar con " + activeTutor.nombre;
+  const av = document.getElementById("m-av");
+  av.textContent = activeTutor.initials;
+  av.className   = "avatar " + avC[i%6];
+  document.getElementById("m-name").textContent = activeTutor.nombre + " · " + activeTutor.materias.join(", ");
+  document.getElementById("m-bio").textContent  = activeTutor.bio;
+  document.getElementById("m-modalidad").value  = "Virtual";
+  document.getElementById("sitio-box").style.display = "none";
+  document.getElementById("error-agenda").style.display = "none";
+  document.getElementById("m-fecha").value = "";
+  document.getElementById("m-tema").value  = "";
+  document.getElementById("m-msg").value   = "";
+  if (document.getElementById("m-lugar")) document.getElementById("m-lugar").value = "";
+  document.getElementById("modal").classList.add("open");
+}
+function cerrarModal() { document.getElementById("modal").classList.remove("open"); }
+function toggleSitio() {
+  document.getElementById("sitio-box").style.display =
+    document.getElementById("m-modalidad").value === "Presencial" ? "block" : "none";
+}
+
+async function confirmar() {
+  const fecha = document.getElementById("m-fecha").value;
+  const tema  = document.getElementById("m-tema").value.trim();
+  if (!fecha) { showError("error-agenda","error-agenda-msg","Selecciona una fecha."); return; }
+  if (!tema)  { showError("error-agenda","error-agenda-msg","Escribe el tema a tratar."); return; }
+
+  const mod     = document.getElementById("m-modalidad").value;
+  const hora    = document.getElementById("m-hora").value;
+  const lugar   = document.getElementById("m-lugar") ? document.getElementById("m-lugar").value.trim() : "";
+  const sitio   = mod==="Presencial" ? lugar : "";
+  const msg     = document.getElementById("m-msg").value.trim();
+
+  const btn = document.getElementById("btn-confirmar");
+  btn.innerHTML = '<i class="ti ti-loader-2 spin"></i> Guardando...';
+  btn.disabled  = true;
+  document.getElementById("error-agenda").style.display = "none";
+
+  try {
+    await escribirFila("Sesiones", {
+      ID_Sesion:"S"+Date.now(), ID_Tutor:activeTutor.id, ID_Estudiante: estudianteActivo ? estudianteActivo.id : "",
+      Fecha:fecha, Hora:hora, Modalidad:mod, Sitio:sitio,
+      Tema:tema, Mensaje:msg, Estado:"Pendiente", Calificacion_Dada:""
+    });
+    cerrarModal();
+    toast("¡Sesión agendada con "+activeTutor.nombre+"! "+fecha+" a las "+hora+(sitio?" en "+sitio:" por videollamada")+".");
+  } catch(e) {
+    showError("error-agenda","error-agenda-msg","No se pudo guardar. Intenta de nuevo.");
+  } finally {
+    btn.innerHTML = '<i class="ti ti-calendar-check"></i> Confirmar sesión';
+    btn.disabled  = false;
+  }
+}
+
+// ── REGISTRO ──────────────────────────────────────────────
+async function registrar() {
+  const nombre   = document.getElementById("r-nombre").value.trim();
+  const apellido = document.getElementById("r-apellido").value.trim();
+  const correo   = document.getElementById("r-correo").value.trim();
+  const semestre = document.getElementById("r-semestre").value;
+
+  document.getElementById("error-reg").style.display = "none";
+  if (!nombre||!apellido)        { showError("error-reg","error-reg-msg","Escribe tu nombre y apellido."); return; }
+  if (!correo.endsWith("@correo.iue.edu.co")) { showError("error-reg","error-reg-msg","Debes usar tu correo @correo.iue.edu.co."); return; }
+  if (!semestre)                 { showError("error-reg","error-reg-msg","Selecciona tu semestre."); return; }
+
+  const btn = document.getElementById("btn-registrar");
+  btn.innerHTML = '<i class="ti ti-loader-2 spin"></i> Guardando...';
+  btn.disabled  = true;
+
+  try {
+    if (rolActual === "tutor") {
+      const materia   = document.getElementById("r-materia").value;
+      const modalidad = document.getElementById("r-modalidad").value;
+      const sitio     = document.getElementById("r-sitio").value.trim();
+      const bio       = document.getElementById("r-bio").value.trim();
+      if (!materia) { showError("error-reg","error-reg-msg","Selecciona la materia que dictas."); btn.innerHTML='Crear cuenta <i class="ti ti-arrow-right"></i>'; btn.disabled=false; return; }
+      await escribirFila("Tutores", {
+        ID_Tutor:"T"+Date.now(), Nombre:nombre, Apellido:apellido,
+        Correo:correo, Semestre:semestre.replace("°",""),
+        Materias:materia, Modalidad:modalidad, Sitio_Preferido:sitio,
+        Presentacion:bio, Calificacion:"0", Sesiones_Completadas:"0", Activo:"TRUE"
+      });
+      todosTutores = await cargarTutores();
+      visTutores   = [...todosTutores];
+      poblarMaterias(todosTutores);
+      actualizarStats();
+    } else {
+      await escribirFila("Estudiantes", {
+        ID_Estudiante:"E"+Date.now(), Nombre:nombre, Apellido:apellido,
+        Correo:correo, Semestre:semestre.replace("°",""),
+        Fecha_Registro:new Date().toISOString().split("T")[0]
+      });
+    }
+    toast("¡Cuenta creada! Bienvenido/a, "+nombre+".");
+    setTimeout(()=>goPage("buscar",null),1500);
+  } catch(e) {
+    showError("error-reg","error-reg-msg","Error al guardar: "+e.message);
+  } finally {
+    btn.innerHTML = 'Crear cuenta <i class="ti ti-arrow-right"></i>';
+    btn.disabled  = false;
+  }
+}
+
+// ── MIS CITAS ─────────────────────────────────────────────
+function setMcRol(r) {
+  mcRolActual = r;
+  document.getElementById("mc-ro-est").classList.toggle("sel", r==="est");
+  document.getElementById("mc-ro-tutor").classList.toggle("sel", r==="tutor");
+}
+
+async function buscarMisCitas() {
+  const correo = document.getElementById("mc-correo").value.trim().toLowerCase();
+  if (!correo) { showError("error-mc","error-mc-msg","Ingresa tu correo institucional."); return; }
+  if (!correo.endsWith("@correo.iue.edu.co")) { showError("error-mc","error-mc-msg","Usa tu correo @correo.iue.edu.co."); return; }
+
+  const btn = document.getElementById("btn-mc-buscar");
+  btn.innerHTML = '<i class="ti ti-loader-2 spin"></i> Verificando...';
+  btn.disabled = true;
+  document.getElementById("error-mc").style.display = "none";
+
+  try {
+    let persona = null;
+    let sesiones = [];
+    const todasSesiones = await leerHoja("Sesiones");
+
+    if (mcRolActual === "est") {
+      const estudiantes = await leerHoja("Estudiantes");
+      persona = estudiantes.find(e => (e["Correo"]||"").toLowerCase() === correo);
+      if (!persona) { showError("error-mc","error-mc-msg","No encontramos ese correo en estudiantes."); return; }
+      sesiones = todasSesiones.filter(s => s["ID_Estudiante"] === persona["ID_Estudiante"]);
+    } else {
+      const tutores = await leerHoja("Tutores");
+      persona = tutores.find(t => (t["Correo"]||"").toLowerCase() === correo);
+      if (!persona) { showError("error-mc","error-mc-msg","No encontramos ese correo en tutores."); return; }
+      sesiones = todasSesiones.filter(s => s["ID_Tutor"] === persona["ID_Tutor"]);
+    }
+
+    const nombre = (persona["Nombre"]||"") + " " + (persona["Apellido"]||"");
+    document.getElementById("mc-nombre-label").textContent = "Citas de " + nombre.trim();
+    renderMisCitas(sesiones);
+    document.getElementById("miscitas-login-box").style.display = "none";
+    document.getElementById("miscitas-resultados").style.display = "block";
+  } catch(e) {
+    showError("error-mc","error-mc-msg","Error al buscar: "+e.message);
+  } finally {
+    btn.innerHTML = '<i class="ti ti-search"></i> Ver mis citas';
+    btn.disabled = false;
+  }
+}
+
+function formatearFecha(raw) {
+  if (!raw) return "—";
+  const matchDate = String(raw).match(/Date\((\d+),(\d+),(\d+)\)/);
+  if (matchDate) {
+    const [,y,m,d] = matchDate;
+    const fecha = new Date(parseInt(y), parseInt(m), parseInt(d));
+    return fecha.toLocaleDateString("es-CO", {weekday:"long", year:"numeric", month:"long", day:"numeric"});
+  }
+  if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
+    const [y,m,d] = raw.split("T")[0].split("-");
+    const fecha = new Date(parseInt(y), parseInt(m)-1, parseInt(d));
+    return fecha.toLocaleDateString("es-CO", {weekday:"long", year:"numeric", month:"long", day:"numeric"});
+  }
+  return raw;
+}
+
+function formatearHora(raw) {
+  if (!raw) return "—";
+  // Formato Google Sheets: Date(1899,11,30,16,0,0) → extraer hora y minutos
+  const matchDateTime = String(raw).match(/Date\(\d+,\d+,\d+,(\d+),(\d+)/);
+  if (matchDateTime) {
+    const h = String(matchDateTime[1]).padStart(2,"0");
+    const m = String(matchDateTime[2]).padStart(2,"0");
+    return `${h}:${m}`;
+  }
+  // Número decimal = fracción del día (ej: 0.375 = 09:00)
+  if (typeof raw === "number") {
+    const totalMin = Math.round(raw * 24 * 60);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+  }
+  // String tipo "9:00:00" o "09:00"
+  const str = String(raw);
+  const partes = str.split(":");
+  if (partes.length >= 2) {
+    return `${String(parseInt(partes[0])).padStart(2,"0")}:${partes[1].padStart(2,"0")}`;
+  }
+  return str;
+}
+
+function renderMisCitas(sesiones) {
+  const contenedor = document.getElementById("mc-lista");
+  if (!sesiones.length) {
+    contenedor.innerHTML = `<div style="text-align:center;padding:2.5rem;color:var(--sub);font-size:14px"><i class="ti ti-calendar-off" style="font-size:36px;display:block;margin-bottom:12px;color:var(--orange-light)"></i>No tienes sesiones agendadas aún.</div>`;
+    return;
+  }
+  contenedor.innerHTML = sesiones.map(s => {
+    const estado = s["Estado"] || "Pendiente";
+    const bdg = estado.toLowerCase().includes("confirm") ? "confirmada" : estado.toLowerCase().includes("cancel") ? "cancelada" : "pendiente";
+    const sitio = s["Sitio"] ? `<br><span>Lugar:</span> ${s["Sitio"]}` : `<br><span>Modalidad:</span> Virtual`;
+    return `<div class="cita-card">
+      <div class="cita-card-top">
+        <strong style="font-size:14px;color:var(--text)">${s["Tema"] || "Sin tema"}</strong>
+        <span class="cita-badge ${bdg}">${estado}</span>
+      </div>
+      <div class="cita-info">
+        <span>Fecha:</span> ${formatearFecha(s["Fecha"])} &nbsp;·&nbsp; <span>Hora:</span> ${formatearHora(s["Hora"])}
+        ${sitio}
+        ${s["Mensaje"] ? `<br><span>Mensaje:</span> ${s["Mensaje"]}` : ""}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function cerrarMisCitas() {
+  document.getElementById("miscitas-login-box").style.display = "block";
+  document.getElementById("miscitas-resultados").style.display = "none";
+  document.getElementById("mc-correo").value = "";
+  document.getElementById("error-mc").style.display = "none";
+}
+
+// ── HELPERS ───────────────────────────────────────────────
+function goPage(p, btn) {
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.getElementById("page-"+p).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  else {
+    const map = {"buscar":0,"miscitas":1,"registro":2};
+    const idx = map[p];
+    if(idx !== undefined) document.querySelectorAll(".nav-btn")[idx].classList.add("active");
+  }
+}
+function setRol(r) {
+  rolActual = r;
+  document.getElementById("ro-tutor").classList.toggle("sel", r==="tutor");
+  document.getElementById("ro-est").classList.toggle("sel",   r==="est");
+  document.getElementById("tutor-extra").style.display = r==="tutor"?"block":"none";
+}
+function showError(boxId, msgId, msg) {
+  document.getElementById(boxId).style.display = "flex";
+  document.getElementById(msgId).textContent    = msg;
+}
+function toast(msg) {
+  const t = document.getElementById("toast");
+  document.getElementById("toast-msg").textContent = msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 5000);
+}
+
+// ── INICIO ────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    todosTutores = await cargarTutores();
+    visTutores   = [...todosTutores];
+    poblarMaterias(todosTutores);
+    actualizarStats();
+    if (!todosTutores.length) {
+      document.getElementById("grid").innerHTML =
+        `<div class="no-results"><i class="ti ti-user-off" style="font-size:36px;color:var(--orange-light);display:block;margin-bottom:12px"></i>Aún no hay tutores registrados.<br>¡Sé el primero en registrarte!</div>`;
+      document.getElementById("count-label").textContent = "0 tutores";
+    } else {
+      renderGrid(visTutores);
+    }
+  } catch(e) {
+    document.getElementById("grid").innerHTML =
+      `<div class="no-results"><i class="ti ti-wifi-off" style="font-size:36px;color:var(--orange-light);display:block;margin-bottom:12px"></i>No se pudo conectar con Google Sheets.</div>`;
+    document.getElementById("count-label").textContent = "Error";
+    showError("error-carga","error-carga-msg","Verifica que la hoja esté compartida como 'Cualquiera con el enlace puede ver'.");
+  }
+});
+</script>
+</body>
+</html>
